@@ -12,6 +12,11 @@ import (
 	entities "github.com/celikelozdinc/phonebook/entity"
 )
 
+func search(book *entities.PhoneBook, searchStr string, c chan *entities.PhoneRecord) {
+	record := book.SearchByName(searchStr)
+	c <- record
+}
+
 func main() {
 
 	fmt.Println("..Main package...")
@@ -49,7 +54,11 @@ func main() {
 	MyBook.Push(&entities.PhoneRecord{ID: 100, Name: "X", Surname: "Y", Country: "Z", Phone: "T"})
 	MyBook.Push(&entities.PhoneRecord{ID: 200, Name: "A", Surname: "B", Country: "C", Phone: "D"})
 
-	record := MyBook.SearchByName("X")
+	//use channel in order to search the record
+	c := make(chan *entities.PhoneRecord)
+	fmt.Println("... Record will be searched on phonebook ... ")
+	go search(MyBook, "Simge", c)
+	record := <-c
 	record.Printer()
 
 	MyBook.Printer()
