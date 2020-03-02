@@ -1,5 +1,12 @@
+Building package:
+
+```go
+go build
+```
+
+
 Execute the command below:
 
-``
-go main.go
-``
+```go
+go run main.go
+```
